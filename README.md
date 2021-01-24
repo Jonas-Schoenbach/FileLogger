@@ -6,15 +6,15 @@ A logging provider that uses the .Net Core Logging API to add the possibility of
 You can either create the file logger like this anywhere in your code:
 
 ```C#
-    var loggerFactory = new LoggerFactory();
-    
-    var folderPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Logs");
-    var fileName = _configuration["Logging:FileLogger:FileName"]
-        .Replace("{date}", DateTime.Now.ToString("dd-MM-yyyy"));
-    
-    loggerFactory.AddProvider(new FileLogger.ProviderBuilder(folderPath, fileName).FileLoggerProvider);
-        
-    var fileLogger = loggerFactory.CreateLogger<Startup>();
+var loggerFactory = new LoggerFactory();
+
+var folderPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Logs");
+var fileName = _configuration["Logging:FileLogger:FileName"]
+    .Replace("{date}", DateTime.Now.ToString("dd-MM-yyyy"));
+
+loggerFactory.AddProvider(new FileLogger.ProviderBuilder(folderPath, fileName).FileLoggerProvider);
+
+var fileLogger = loggerFactory.CreateLogger<Startup>();
 ```
 
 Or like this in the ``CreateHostBuilder(string[] args)``-Method:
@@ -55,7 +55,7 @@ private static IHostBuilder CreateHostBuilder(string[] args)
 }
 ```
 
-## AppSettings Example:
+## AppSettings Example
 
 ```json
 {
