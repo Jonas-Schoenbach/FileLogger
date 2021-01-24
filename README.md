@@ -9,8 +9,7 @@ You can either create the file logger like this anywhere in your code:
 var loggerFactory = new LoggerFactory();
 
 var folderPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Logs");
-var fileName = _configuration["Logging:FileLogger:FileName"]
-    .Replace("{date}", DateTime.Now.ToString("dd-MM-yyyy"));
+var fileName = _configuration["Logging:FileLogger:FileName"].Replace("{date}", DateTime.Now.ToString("dd-MM-yyyy"));
 
 loggerFactory.AddProvider(new FileLogger.ProviderBuilder(folderPath, fileName).FileLoggerProvider);
 
@@ -21,37 +20,36 @@ Or like this in the ``CreateHostBuilder(string[] args)``-Method:
 ```C#
 private static IHostBuilder CreateHostBuilder(string[] args)
 {
-    var hostBuilder = Host.CreateDefaultBuilder(args);
+  var hostBuilder = Host.CreateDefaultBuilder(args);
 
-    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-    var fileLoggerPath = Path.Combine(assemblyPath, "Logs");
-    
-    hostBuilder.ConfigureLogging
-    (
-        (context, logging) =>
-        {
-            logging.ClearProviders();
-            logging.AddConfiguration(context.Configuration.GetSection("Logging"));
-            logging.FileLogger(options =>
-            {
-                options.FilePath = fileLoggerPath;
-                options.FileName = context.Configuration["Logging:FileLogger:FileName"]
-                    .Replace("{date}", DateTime.Now.ToString("dd-MM-yyyy"));
-            });
-            logging.AddDebug();
-            logging.AddConsole();
-        }
-    );
-    
-    hostBuilder.ConfigureWebHostDefaults
-    (
-        webBuilder =>
-        {
-            webBuilder.UseStartup<Startup>();
-        }
-    );
+  var folderPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Logs");
+  
+  hostBuilder.ConfigureLogging
+  (
+    (context, logging) =>
+    {
+      logging.ClearProviders();
+      logging.AddConfiguration(context.Configuration.GetSection("Logging"));
+      logging.FileLogger(options =>
+      {
+          options.FilePath = fileLoggerPath;
+          options.FileName = context.Configuration["Logging:FileLogger:FileName"]
+              .Replace("{date}", DateTime.Now.ToString("dd-MM-yyyy"));
+      });
+      logging.AddDebug();
+      logging.AddConsole();
+    }
+  );
+  
+  hostBuilder.ConfigureWebHostDefaults
+  (
+    webBuilder =>
+    {
+        webBuilder.UseStartup<Startup>();
+    }
+  );
 
-    return hostBuilder;
+  return hostBuilder;
 }
 ```
 
