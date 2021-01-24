@@ -9,7 +9,6 @@ You can either create the file logger like this anywhere in your code:
     var loggerFactory = new LoggerFactory();
     
     var folderPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Logs");
-    var date = HelperMethods.GetCurrentDate();
     var fileName = _configuration["Logging:FileLogger:FileName"]
         .Replace("{date}", DateTime.Now.ToString("dd-MM-yyyy"));
     
